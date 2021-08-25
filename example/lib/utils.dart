@@ -4,6 +4,8 @@
 import 'dart:collection';
 
 import 'package:table_calendar/table_calendar.dart';
+///////////////////////////////////////////////////////////
+import 'package:intl/intl.dart' show NumberFormat;
 
 /// Example event class.
 class Event {
@@ -26,7 +28,7 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
 final _kEventSource = Map.fromIterable(List.generate(1000, (index) => index),
     key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 1),
     value: (item) => List.generate(
-        item =2, (index) => Event('income/outcome $item | ${index + 1}')))
+        item = 2, (index) => Event('income/outcome $item | ${index + 1}')))
   ..addAll({
     kToday: [
       Event('Today\'s outcome'),
@@ -50,3 +52,18 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+
+class CurrencyFormat {
+  static String format(double value, {required String symbol}) {
+    if (value > 999999) {
+      return NumberFormat.compactSimpleCurrency(
+        name: symbol,
+        decimalDigits: 4,
+      ).format(value);
+    }
+    return NumberFormat.simpleCurrency(
+      name: symbol,
+      decimalDigits: 1,
+    ).format(value);
+  }
+}
