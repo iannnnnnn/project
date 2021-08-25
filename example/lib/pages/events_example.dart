@@ -3,11 +3,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:table_calendar_example/main.dart';
 
 import '../utils.dart';
+///////////////////////
+import 'package:input_calculator/input_calculator.dart';
 
-
-
+/////////////////////trying
 class TableEventsExample extends StatefulWidget {
   @override
   _TableEventsExampleState createState() => _TableEventsExampleState();
@@ -84,6 +86,20 @@ class _TableEventsExampleState extends State<TableEventsExample> {
     }
   }
 
+  //////////////////////////////////////////////////////////////
+  double _value = 0.0;
+
+  set value(double value) {
+    setState(() {
+      _value = value;
+    });
+  }
+
+  String valueFormat(double value) {
+    return CurrencyFormat.format(value, symbol: '');
+  }
+
+  /////////////////////////////////////////////////////////////
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,28 +138,16 @@ class _TableEventsExampleState extends State<TableEventsExample> {
           ),
           const SizedBox(height: 8.0),
           Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
-                      ),
-                    );
-                  },
-                );
+            child: CalculatorTextField(
+              initialValue: _value,
+              theme: CalculatorThemes.flat,
+              inputDecoration: InputDecoration(
+                labelText: 'BYG',
+                icon: Icon(Icons.attach_money),
+              ),
+              onSubmitted: (value) {
+                this.value = value!;
+                print('HOW : $value');
               },
             ),
           ),
